@@ -85,7 +85,6 @@ class LeftMenu extends React.Component {
         this.props.setMaxPrice(event.target.value);
     };
 
-
     setMinSquare = event => {
         this.props.setMinSquare(event.target.value);
     };
@@ -93,6 +92,8 @@ class LeftMenu extends React.Component {
     setMaxSquare = event => {
         this.props.setMaxSquare(event.target.value);
     };
+
+
     render() {
 
         const {classes} = this.props;
@@ -117,7 +118,7 @@ class LeftMenu extends React.Component {
                                         margin="normal"
                                         variant="outlined"
                                         onChange={this.setMinPrice}
-                                        value={this.props.minPrice}
+                                        value={this.minPrice}
                                     />
                                 </Grid>
                                 <Grid xs={6}>

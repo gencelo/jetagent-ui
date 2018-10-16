@@ -52,67 +52,68 @@ class Posts extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            posts: []
-        };
+        this.posts = [];
         this.componentDidMount = this.componentDidMount.bind(this);
+        this.componentWillUpdate = this.componentWillUpdate.bind(this);
+        this.componentDidUpdate = this.componentDidUpdate.bind(this);
     }
-
 
     componentDidMount() {
-        this.callApi();
+        console.log("did mount");
+        this.callApi(null, null, null, null, null, null);
+        this.posts = [];
     }
 
-    componentDidUpdate() {
-        this.callApi();
+    componentWillUpdate() {
+        console.log("update");
+        this.callApi(this.props.query, this.props.minPrice, this.props.maxPrice, this.props.roomCounts, this.props.minSquare, this.props.maxSquare);
+    }
+    componentDidUpdate(){
+        this.posts = [];
     }
 
-    callApi() {
-        const {minPrice, query, maxPrice, roomCounts, minSquare, maxSquare} = this.state;
+    callApi(query, minPrice, maxPrice, roomCounts, minSquare, maxSquare) {
+
+        var roomCountsParams = [], roomCountsParam;
+
+        if(roomCounts) {
+
+            for (var i = 0; i < roomCounts.length; i++) {
+                var param = roomCounts[i];
+                roomCountsParams.push(param);
+            }
+
+            roomCountsParam = roomCountsParams.join("&room_count=");
+        }
+        else{
+            roomCountsParam = undefined;
+        }
 
         axios.get(API, {
             params: {
-                query: query,
+                q: query,
                 min_price: minPrice,
                 max_price: maxPrice,
-                room_count: roomCounts,
+                room_count: roomCountsParam,
                 min_square: minSquare,
                 max_square: maxSquare,
 
             }
-        }).then((response) => this.setState({posts: response.data}));
-    }
+        }).then((response) => response.data.map(r => this.posts.push(r)));
 
-    componentWillReceiveProps(p) {
-
-        if (p.minPrice)   this.setState({minPrice: p.minPrice});
-        else this.setState({minPrice: null});
-
-        if (p.query) this.setState({query: p.query});
-        else  this.setState({query: null});
-
-        if (p.maxPrice) this.setState({maxPrice: p.maxPrice});
-        else this.setState({maxPrice: null});
-
-        if (p.roomCounts) this.setState({roomCounts: p.roomCounts});
-        else this.setState({roomCounts: null});
-
-        if (p.minSquare) this.setState({minSquare: p.minSquare});
-        else this.setState({minSquare: null});
-
-        if (p.maxSquare) this.setState({maxSquare: p.maxSquare});
-        else this.setState({maxSquare: null});
+        console.log("api call");
+        console.log(this.posts);
     }
 
     render() {
 
-        const {posts} = this.state;
         const {classes} = this.props;
+        console.log("render");
+        console.log(this.posts);
 
-        if (posts.length > 0) {
-            posts.map(post => console.log(post));
+        if (this.posts.length > 0) {
 
-            return posts.map(post => {
+            return this.posts.map(post => {
                 return (
                     <Paper elevation={24} className={classes.postPaper}>
                         <Grid container spacing={24}>
@@ -156,14 +157,13 @@ class Posts extends React.Component {
                         classes={{colorPrimary: classes.colorPrimary, barColorPrimary: classes.barColorPrimary}}
                     />
                 </div>
+
             );
     }
 }
 
 Posts.propTypes = {
-    classes: PropTypes.object.isRequired,
-    minPrice: PropTypes.object,
-    query: PropTypes.object,
+    classes: PropTypes.object.isRequired
 }
 
 export default withStyles(styles)(Posts);

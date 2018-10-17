@@ -8,7 +8,9 @@ You can find the most recent version of this guide [here](https://github.com/fac
 
 - [Sending Feedback](#sending-feedback)
 - [Folder Structure](#folder-structure)
+- [Images](#images)
 - [Available Scripts](#available-scripts)
+  - [npm install](#npm install)
   - [npm start](#npm-start)
   - [npm test](#npm-test)
   - [npm run build](#npm-run-build)
@@ -54,9 +56,20 @@ For the project to build, **these files must exist with exact filenames**:
 - `public/index.html` is the page template;
 - `src/index.js` is the JavaScript entry point.
 
+## Images
+
+![](./jetagent1.png)
+![](./jetagent2.png)
+![](./jetagent3.png)
+![](./jetagent4.png)
+
 ## Available Scripts
 
 In the project directory, you can run:
+
+### `npm install`
+
+This command installs a package, and any packages that it depends on.
 
 ### `npm start`
 

@@ -18,7 +18,7 @@ import Divider from '@material-ui/core/Divider';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 
-const API = "http://localhost:8080/api/v1/posts";
+const API = "http://142.93.167.105:8080/api/v1/posts";
 
 const styles = theme => ({
     card: {
@@ -52,31 +52,35 @@ class Posts extends React.Component {
 
     constructor(props) {
         super(props);
-        this.posts = [];
+        this.state = {
+            posts: [],
+        }
+
         this.componentDidMount = this.componentDidMount.bind(this);
-        this.componentWillUpdate = this.componentWillUpdate.bind(this);
-        this.componentDidUpdate = this.componentDidUpdate.bind(this);
+        this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
     }
 
     componentDidMount() {
-        console.log("did mount");
         this.callApi(null, null, null, null, null, null);
-        this.posts = [];
     }
 
-    componentWillUpdate() {
-        console.log("update");
-        this.callApi(this.props.query, this.props.minPrice, this.props.maxPrice, this.props.roomCounts, this.props.minSquare, this.props.maxSquare);
+    componentWillReceiveProps(newProps) {
+
+        this.callApi(newProps.query, newProps.minPrice, newProps.maxPrice, newProps.roomCounts, newProps.minSquare, newProps.maxSquare);
     }
-    componentDidUpdate(){
-        this.posts = [];
+
+
+    shouldComponentUpdate(nextProps, nextState) {
+
+        return this.state !== nextState;
     }
 
     callApi(query, minPrice, maxPrice, roomCounts, minSquare, maxSquare) {
+        const {posts} = this.state;
 
         var roomCountsParams = [], roomCountsParam;
 
-        if(roomCounts) {
+        if (roomCounts) {
 
             for (var i = 0; i < roomCounts.length; i++) {
                 var param = roomCounts[i];
@@ -85,7 +89,7 @@ class Posts extends React.Component {
 
             roomCountsParam = roomCountsParams.join("&room_count=");
         }
-        else{
+        else {
             roomCountsParam = undefined;
         }
 
@@ -99,21 +103,18 @@ class Posts extends React.Component {
                 max_square: maxSquare,
 
             }
-        }).then((response) => response.data.map(r => this.posts.push(r)));
+        }).then((response) => this.setState({posts: response.data}));
 
-        console.log("api call");
-        console.log(this.posts);
     }
 
     render() {
 
+        const {posts} = this.state;
         const {classes} = this.props;
-        console.log("render");
-        console.log(this.posts);
 
-        if (this.posts.length > 0) {
+        if (posts.length > 0) {
 
-            return this.posts.map(post => {
+            return posts.map(post => {
                 return (
                     <Paper elevation={24} className={classes.postPaper}>
                         <Grid container spacing={24}>

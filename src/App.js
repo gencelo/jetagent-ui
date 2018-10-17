@@ -8,9 +8,6 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            minPrice: null,
-            query: null,
-            maxPrice: null,
             roomCounts: [],
         };
         this.setMinPrice = this.setMinPrice.bind(this);

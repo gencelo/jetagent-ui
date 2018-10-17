@@ -1,4 +1,6 @@
 
+NOT: If you can not run on your local computer, you can be check from this from http://142.93.167.105:3000/ 
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>

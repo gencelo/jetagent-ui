@@ -18,7 +18,7 @@ import Divider from '@material-ui/core/Divider';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 
-const API = "http://142.93.167.105:8080/api/v1/posts";
+const API = "http://localhost:8080/api/v1/posts";
 
 const styles = theme => ({
     card: {
